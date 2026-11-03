@@ -9,11 +9,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Main {
-    //database for storing menu items
     private static final Map<String, Double> menuItems = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws IOException {
-        //generate initial menu items
         menuItems.put("BURGER", 9.99);
         menuItems.put("PIZZA", 14.99);
         menuItems.put("SALAD", 7.99);
@@ -27,7 +25,6 @@ public class Main {
             String query = exchange.getRequestURI().getQuery(); // e.g., price=9.99
 
             if ("GET".equalsIgnoreCase(method)) {
-                //get all menu items
                 StringBuilder json = new StringBuilder("{\n  \"menu\": [\n");
                 int i = 0;
                 for (Map.Entry<String, Double> entry : menuItems.entrySet()) {
@@ -39,7 +36,6 @@ public class Main {
                 sendResponse(exchange, 200, json.toString());
 
             } else if ("POST".equalsIgnoreCase(method)) {
-                //add new menu item
                 Map<String, String> params = parseQuery(query);
                 String name = params.get("name");
                 String priceStr = params.get("price");
@@ -58,7 +54,6 @@ public class Main {
                 }
 
             } else if ("PUT".equalsIgnoreCase(method)) {
-                //update new menu item
                 String[] segments = path.split("/");
                 if (segments.length >= 4) {
                     String itemName = segments[3].toUpperCase();
@@ -85,7 +80,6 @@ public class Main {
                 }
 
             } else if ("DELETE".equalsIgnoreCase(method)) {
-                //remove a menu item
                 String[] segments = path.split("/");
                 if (segments.length >= 4) {
                     String itemName = segments[3].toUpperCase();
